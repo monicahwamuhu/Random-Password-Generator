@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Password Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Generate a <br><span>random password</span> </h1>
+        <div class="display">
+            <input type="text" id="password" placeholder="password">
+            <img src="images/copy.png" onclick="copyPassword()"> <!-- Button to copy password -->
+        </div>
+        <button onclick="createPassword()"><img src="images/generate.png">Generate password</button> <!-- Button to generate password -->
+    </div>
+
+    <script>
+        const passwordBox = document.getElementById("password");
+        const length = 12; // Length of the password
+
+        // Define character sets for password generation
+        const upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const lowerCase = "abcdefghijklmnopqrstuvwxyz";
+        const number = "0123456789";
+        const symbol = "@#$%^&*()_+~|}{[]></-=";
+
+        // Combine all character sets
+        const allChars = upperCase + lowerCase + number + symbol;
+
+        // Function to generate a random password
+        function createPassword() {
+            let password = "";
+
+            // Ensure at least one character from each category
+            password += upperCase[Math.floor(Math.random() * upperCase.length)];
+            password += lowerCase[Math.floor(Math.random() * lowerCase.length)];
+            password += number[Math.floor(Math.random() * number.length)];
+            password += symbol[Math.floor(Math.random() * symbol.length)];
+
+            // Generate remaining characters
+            for (let i = 0; i < length - 4; i++) {
+                password += allChars[Math.floor(Math.random() * allChars.length)];
+            }
+
+            // Shuffle the characters in the password
+            password = shuffleString(password);
+
+            // Display the generated password in the input box
+            passwordBox.value = password;
+        }
+
+        // Function to shuffle characters in a string
+        function shuffleString(str) {
+            const array = str.split('');
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array.join('');
+        }
+
+        // Function to copy password to clipboard
+        function copyPassword() {
+            passwordBox.select();
+            navigator.clipboard.writeText(passwordBox.value);
+        }
+    </script>
+</body>
+</html>
